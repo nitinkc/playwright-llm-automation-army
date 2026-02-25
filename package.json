@@ -1,0 +1,31 @@
+{
+  "name": "pw-self-heal-lab",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test:v1": "cross-env BASE_URL=http://localhost:5173 FE_LOCATOR_SET=v1 FE_COPY_SET=copyA FE_OVERLAY=0 FE_DUPSAVE=0 SELF_HEAL=0 playwright test",
+    "test:break": "cross-env BASE_URL=http://localhost:5173 FE_LOCATOR_SET=v2 FE_COPY_SET=copyA FE_OVERLAY=0 FE_DUPSAVE=0 SELF_HEAL=0 playwright test",
+    "test:heal": "cross-env BASE_URL=http://localhost:5173 FE_LOCATOR_SET=v2 FE_COPY_SET=copyA FE_OVERLAY=0 FE_DUPSAVE=0 SELF_HEAL=1 playwright test",
+    "test:hard": "cross-env BASE_URL=http://localhost:5173 FE_LOCATOR_SET=v2 FE_COPY_SET=copyB FE_OVERLAY=1 FE_DUPSAVE=1 SELF_HEAL=1 playwright test",
+    "heal:reset:v1": "ts-node scripts/resetLocators.ts v1",
+    "heal:reset:v2": "ts-node scripts/resetLocators.ts v2",
+    "show:locators": "node scripts/showLocators.js",
+    "allure:generate": "allure generate ./allure-results --clean -o ./allure-report",
+    "allure:open": "allure open ./allure-report",
+    "allure:clean": "node scripts/cleanAllure.js"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.47.2",
+    "allure-playwright": "^2.15.1",
+    "cheerio": "^1.0.0-rc.12",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4",
+    "allure-commandline": "^2.31.0"
+  }
+}

@@ -1,0 +1,12 @@
+node_modules
+playwright-report
+test-results
+allure-results
+allure-report
+*.log
+package-lock.json
+.DS_Store
+.idea
+.vscode
+*.iml
+dist

@@ -1,0 +1,16 @@
+{
+  "login.email": "[data-testid=\"login-email\"]",
+  "login.password": "[data-testid=\"login-password\"]",
+  "login.submit": "[data-testid=\"login-submit\"]",
+  "nav.projects": "[data-testid=\"nav-projects\"]",
+  "nav.kanban": "[data-testid=\"nav-kanban\"]",
+  "nav.settings": "[data-testid=\"nav-settings\"]",
+  "dashboard.welcome": "[data-testid=\"dash-welcome\"]",
+  "projects.create": "[data-testid=\"projects-create\"]",
+  "projects.search": "[data-testid=\"projects-search\"]",
+  "wizard.next": "[data-testid=\"wizard-next\"]",
+  "wizard.save": "[data-testid=\"wizard-save\"]",
+  "kanban.todoLane": "[data-testid=\"lane-todo\"]",
+  "kanban.doneLane": "[data-testid=\"lane-done\"]",
+  "toast": "[data-testid=\"toast\"]"
+}
