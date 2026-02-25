@@ -29,6 +29,8 @@ Prior to running scenarios, please run `npm start` for automation exercise proje
 FE flags: locatorSet=v1
 ```bash
 npm run test:v1
+
+npx playwright test
 ```
 
 ### 2) Break selectors (should fail)
