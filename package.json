@@ -16,6 +16,7 @@
     "allure:clean": "node scripts/cleanAllure.js"
   },
   "dependencies": {
+    "@playwright/cli": "^0.1.1",
     "@playwright/test": "^1.47.2",
     "allure-playwright": "^2.15.1",
     "cheerio": "^1.0.0-rc.12",
@@ -24,8 +25,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.5.5",
+    "allure-commandline": "^2.31.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4",
-    "allure-commandline": "^2.31.0"
+    "typescript": "^5.5.4"
   }
 }

@@ -23,6 +23,8 @@ npx playwright install
 
 ## Run scenarios
 
+Prior to running scenarios, please run `npm start` for automation exercise project
+
 ### 1) Baseline (should pass)
 FE flags: locatorSet=v1
 ```bash
