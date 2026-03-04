@@ -22,6 +22,13 @@ function bestCandidate(dom, hint) {
 
   const candidates = []
 
+  const scope = (() => {
+    const withinSelector = hint?.withinSelector
+    if (!withinSelector) return $.root()
+    const scoped = $(withinSelector)
+    return scoped.length ? scoped : $.root()
+  })()
+
   const push = (el, kind) => {
     const $el = $(el)
     const tag = el.tagName?.toLowerCase() || ''
@@ -62,22 +69,28 @@ function bestCandidate(dom, hint) {
   }
 
   if (hint.kind === 'input') {
-    $('input, textarea').each((_, el) => push(el, 'input'))
+    scope.find('input, textarea').each((_, el) => push(el, 'input'))
   } else if (hint.kind === 'button' || hint.kind === 'nav') {
-    $('button, a, [role="button"]').each((_, el) => push(el, 'button'))
+    scope.find('button, a, [role="button"]').each((_, el) => push(el, 'button'))
   } else {
     // region: any element with data-testid
-    $('[data-testid]').each((_, el) => push(el, 'region'))
+    scope.find('[data-testid]').each((_, el) => push(el, 'region'))
     // also headings
-    $('h1,h2,h3').each((_, el) => push(el, 'region'))
+    scope.find('h1,h2,h3').each((_, el) => push(el, 'region'))
   }
 
   candidates.sort((a, b) => b.score - a.score)
   return candidates[0] || null
 }
 
-function selectorFromCandidate(c) {
+function escapeAttr(s) {
+  return String(s || '').replace(/"/g, '\\"')
+}
+
+function selectorFromCandidate(c, hint) {
   if (!c) return null
+
+  const scoped = (sel) => (hint?.withinSelector ? `${hint.withinSelector} ${sel}` : sel)
 
   if (c.testid) {
     return {
@@ -91,22 +104,42 @@ function selectorFromCandidate(c) {
   if (c.kind === 'button') {
     const name = normalize(c.aria || c.text)
     if (name) {
-      // Playwright supports role selectors: role=button[name="..."]
       return {
-        selector: `role=button[name="${name}"]`,
+        selector: scoped(`:is(button,a,[role="button"]):has-text("${escapeAttr(name)}")`),
         confidence: Math.min(0.85, 0.45 + c.score * 0.1),
         reason: `picked role button by name=${name}`
       }
     }
   }
 
-  // For inputs, use placeholder or label text
+  // For inputs, prefer stable attributes that don't require accessible names.
   if (c.kind === 'input') {
-    const label = normalize(c.labelText || c.aria || c.placeholder)
+    if (c.id) {
+      return {
+        selector: `#${escapeAttr(c.id)}`,
+        confidence: Math.min(0.85, 0.45 + c.score * 0.1),
+        reason: `picked id=${c.id}`
+      }
+    }
+    if (c.aria) {
+      return {
+        selector: scoped(`[aria-label="${escapeAttr(c.aria)}"]`),
+        confidence: Math.min(0.8, 0.42 + c.score * 0.1),
+        reason: `picked aria-label=${c.aria}`
+      }
+    }
+    if (c.placeholder) {
+      return {
+        selector: scoped(`${c.tag || 'input'}[placeholder="${escapeAttr(c.placeholder)}"]`),
+        confidence: Math.min(0.78, 0.4 + c.score * 0.1),
+        reason: `picked placeholder=${c.placeholder}`
+      }
+    }
+    const label = normalize(c.labelText)
     if (label) {
       return {
         selector: `role=textbox[name="${label}"]`,
-        confidence: Math.min(0.8, 0.4 + c.score * 0.1),
+        confidence: Math.min(0.75, 0.38 + c.score * 0.1),
         reason: `picked role textbox by name=${label}`
       }
     }
@@ -124,7 +157,7 @@ async function handle(method, params) {
   if (method === 'heal') {
     const { key, dom, hint } = params || {}
     const c = bestCandidate(dom, hint || {})
-    const out = selectorFromCandidate(c)
+    const out = selectorFromCandidate(c, hint || {})
     if (!out) return { ok: false, key, message: 'no match' }
     return { ok: true, key, ...out, debug: c }
   }

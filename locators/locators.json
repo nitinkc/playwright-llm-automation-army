@@ -1,16 +1,54 @@
 {
+  "home.hero": "[data-testid=\"home-hero\"]",
+  "home.testCasesButton": "[data-testid=\"home-test-cases-button\"]",
+  "home.apiPracticeButton": "[data-testid=\"home-api-practice-button\"]",
+  "home.featuredProducts": "[data-testid=\"featured-products\"]",
+  "home.recommendedProducts": "[data-testid=\"recommended-products\"]",
+
+  "products.searchInput": "[data-testid=\"products-search-input\"]",
+  "products.searchSubmit": "[data-testid=\"products-search-submit\"]",
+  "products.categoryList": "[data-testid=\"products-category-list\"]",
+  "products.brandList": "[data-testid=\"products-brand-list\"]",
+  "products.grid": "[data-testid=\"products-grid\"]",
+  "products.emptyState": "[data-testid=\"products-empty-state\"]",
+
+  "product.card": "[data-testid=\"product-card\"]",
+  "product.overlay": "[data-testid=\"product-overlay\"]",
+  "product.addToCart": "[data-testid=\"add-to-cart-button\"]",
+  "product.viewProduct": "[data-testid=\"view-product-button\"]",
+  "product.name": "[data-testid=\"product-name\"]",
+  "product.price": "[data-testid=\"product-price\"]",
+
+  "login.form": "[data-testid=\"login-form\"]",
   "login.email": "[data-testid=\"login-email\"]",
   "login.password": "[data-testid=\"login-password\"]",
   "login.submit": "[data-testid=\"login-submit\"]",
-  "nav.projects": "[data-testid=\"nav-projects\"]",
-  "nav.kanban": "[data-testid=\"nav-kanban\"]",
-  "nav.settings": "[data-testid=\"nav-settings\"]",
-  "dashboard.welcome": "[data-testid=\"dash-welcome\"]",
-  "projects.create": "[data-testid=\"projects-create\"]",
-  "projects.search": "[data-testid=\"projects-search\"]",
-  "wizard.next": "[data-testid=\"wizard-next\"]",
-  "wizard.save": "[data-testid=\"wizard-save\"]",
-  "kanban.todoLane": "[data-testid=\"lane-todo\"]",
-  "kanban.doneLane": "[data-testid=\"lane-done\"]",
-  "toast": "[data-testid=\"toast\"]"
+
+  "signup.form": "[data-testid=\"signup-form\"]",
+  "signup.name": "[data-testid=\"signup-name\"]",
+  "signup.email": "[data-testid=\"signup-email\"]",
+  "signup.password": "[data-testid=\"signup-password\"]",
+  "signup.submit": "[data-testid=\"signup-submit\"]",
+
+  "auth.message": "[data-testid=\"auth-message\"]",
+
+  "cart.emptyState": "[data-testid=\"cart-empty-state\"]",
+  "cart.table": "[data-testid=\"cart-table\"]",
+  "cart.row": "[data-testid=\"cart-row\"]",
+  "cart.quantityControl": "[data-testid=\"cart-quantity-control\"]",
+  "cart.quantityInput": "[data-testid=\"cart-quantity-input\"]",
+  "cart.removeButton": "[data-testid=\"cart-remove-button\"]",
+  "clearCart.button": "[data-testid=\"clear-cart-button\"]",
+  "cart.total": "[data-testid=\"cart-total\"]",
+  "checkout.button": "[data-testid=\"checkout-button\"]",
+
+  "cart.notification": "[data-testid=\"cart-notification\"]",
+  "cart.notificationMessage": "[data-testid=\"cart-notification-message\"]",
+
+  "scenario.list": "[data-testid=\"scenario-list\"]",
+  "scenario.active": "[data-testid=\"active-scenario\"]",
+  "scenario.mode": "[data-testid=\"scenario-mode\"]",
+  "scenario.status": "[data-testid=\"scenario-status\"]",
+  "scenario.reset": "[data-testid=\"scenario-reset\"]",
+  "scenario.target": "[data-testid=\"scenario-target\"]"
 }

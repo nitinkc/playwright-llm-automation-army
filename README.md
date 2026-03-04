@@ -1,19 +1,22 @@
-# Playwright Self Heal Lab (MCP client/server demo)
+# Playwright Automation + Self-Heal Lab
 
-This repo tests the **FE Locator Lab** app and demonstrates:
-- multi-page Playwright tests using Page Objects
-- selector drift when FE locator set changes
-- self-healing that:
-  1) captures DOM snapshot
-  2) asks a tiny MCP-like server for a replacement selector
-  3) patches `locators/locators.json`
-  4) retries the failed action once
+This repo automates the **Automation Exercise Clone** frontend (React) running at `http://localhost:5173` and demonstrates a simple self-healing approach:
+1) run with a baseline locator set
+2) introduce locator drift (intentionally broken selectors)
+3) auto-heal by analyzing the DOM and patching `locators/locators.json`
 
-It follows an evidence-first mindset similar to your pipeline plan: capture attachments (screenshot, trace, logs) and then change the smallest surface area (usually locators). fileciteturn1file2L12-L18 fileciteturn1file2L152-L163
+App-specific automation requirements live in `PLAYWRIGHT_AUTOMATION.md`.
 
 ## Prereqs
 - Node 18+
-- The FE app running at http://localhost:5173
+- Frontend running at `http://localhost:5173`
+- (Optional) json-server API at `http://localhost:5000` (used by `tests/auth.spec.ts`)
+
+If your FE project is checked out next to this repo (example: `../fe-automation-exercise-clone`):
+```bash
+cd ../fe-automation-exercise-clone
+npm start
+```
 
 ## Install
 ```bash
@@ -23,44 +26,52 @@ npx playwright install
 
 ## Run scenarios
 
-Prior to running scenarios, please run `npm start` for automation exercise project
+### Common Playwright commands
+- `npx playwright test` — run all tests
+- `npx playwright test tests/smoke.spec.ts` — run a single test file
+- `npx playwright test --ui` — open Playwright UI mode
 
 ### 1) Baseline (should pass)
-FE flags: locatorSet=v1
 ```bash
 npm run test:v1
-
-npx playwright test
 ```
 
 ### 2) Break selectors (should fail)
-FE flags: locatorSet=v2 (changes data-testid)
 ```bash
 npm run test:break
 ```
 
 ### 3) Self heal (should pass and patch locators.json)
-Same FE flags: locatorSet=v2, but self-healing enabled.
 ```bash
 npm run test:heal
 ```
 
-You should see logs like:
-- "heal: updated login.email -> [data-testid=\"auth-email\"]"
-- and then the action retries and continues.
-
-### 4) Reset locators back to v1 (so you can demo again)
+### 4) Reset locators back to v1
 ```bash
 npm run heal:reset:v1
 ```
 
-## How FE flags are set from tests
-Tests set localStorage before navigation:
-- locatorSet (v1 / v2 / v3)
-- copySet (Sign in / Log in)
-- overlayEnabled (timing blocker)
-- duplicateSaveButton (strict mode issues)
+## All available scripts (purpose)
+- `npm run test` — run all Playwright tests
+- `npm run test:v1` — reset locators to v1 and run tests (baseline)
+- `npm run test:break` — reset locators to v2 and run tests (expect failures)
+- `npm run test:heal` — reset locators to v2 and run tests with self-heal enabled
+- `npm run heal:reset:v1` — reset `locators/locators.json` to v1 baseline
+- `npm run heal:reset:v2` — reset `locators/locators.json` to v2 baseline
+- `npm run show:locators` — print current `locators/locators.json`
+- `npm run allure:generate` — generate Allure report from `allure-results`
+- `npm run allure:open` — open Allure report
+- `npm run allure:clean` — delete Allure results and report output
+
+## Optional: start the FE automatically from Playwright
+Set these env vars:
+- `WEB_SERVER_COMMAND` (example: `npm start`)
+- `WEB_SERVER_CWD` (example: `../fe-automation-exercise-clone`)
+
+Example:
+```bash
+WEB_SERVER_COMMAND="npm start" WEB_SERVER_CWD="../fe-automation-exercise-clone" npm run test:v1
+```
 
 ## Allure + artifacts
-Playwright is configured to keep trace/video/screenshot on failures.
-In your CI pipeline you can upload these as artifacts (Allure results zip + attachments). fileciteturn1file0L1-L14 fileciteturn1file2L1-L9
+Playwright writes Allure results to `./allure-results` and keeps trace/video/screenshot on failures.

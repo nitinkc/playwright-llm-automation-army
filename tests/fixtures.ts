@@ -1,29 +1,22 @@
 import { test as base } from '@playwright/test'
-import fs from 'node:fs'
-import path from 'node:path'
 
 export const test = base.extend({
   page: async ({ page }, use) => {
-    const locatorSet = process.env.FE_LOCATOR_SET || 'v1'
-    const copySet = process.env.FE_COPY_SET || 'copyA'
-    const overlayEnabled = process.env.FE_OVERLAY === '1'
-    const duplicateSaveButton = process.env.FE_DUPSAVE === '1'
-
-    // This must match FE key in flags.ts
-    await page.addInitScript(({ locatorSet, copySet, overlayEnabled, duplicateSaveButton }) => {
-      localStorage.setItem('fe_locator_lab_flags_v1', JSON.stringify({
-        locatorSet,
-        copySet,
-        overlayEnabled,
-        duplicateSaveButton
-      }))
-    }, { locatorSet, copySet, overlayEnabled, duplicateSaveButton })
-
     await use(page)
   }
 })
 
 export { expect } from '@playwright/test'
+
+test.beforeEach(async ({ page }) => {
+  await page.context().clearCookies()
+  await page.goto('/')
+  await page.evaluate(() => {
+    localStorage.clear()
+    sessionStorage.clear()
+  })
+  await page.goto('/')
+})
 
 // Attach evidence into Allure results.
 // This makes the Allure bundle usable for your "download allure-results.zip then self-heal" objective.

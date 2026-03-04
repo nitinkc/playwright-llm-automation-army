@@ -1,16 +1,54 @@
 {
-  "login.email": "[data-testid=\"auth-email\"]",
-  "login.password": "[data-testid=\"auth-pass\"]",
-  "login.submit": "[data-testid=\"auth-submit\"]",
-  "nav.projects": "[data-testid=\"menu-projects\"]",
-  "nav.kanban": "[data-testid=\"menu-kanban\"]",
-  "nav.settings": "[data-testid=\"menu-settings\"]",
-  "dashboard.welcome": "[data-testid=\"dashboard-hello\"]",
-  "projects.create": "[data-testid=\"create-project\"]",
-  "projects.search": "[data-testid=\"search-projects\"]",
-  "wizard.next": "[data-testid=\"next-step\"]",
-  "wizard.save": "[data-testid=\"save-project\"]",
-  "kanban.todoLane": "[data-testid=\"kanban-todo\"]",
-  "kanban.doneLane": "[data-testid=\"kanban-done\"]",
-  "toast": "[data-testid=\"snackbar\"]"
+  "home.hero": "[data-testid=\"home-hero-v2\"]",
+  "home.testCasesButton": "[data-testid=\"home-test-cases-button-v2\"]",
+  "home.apiPracticeButton": "[data-testid=\"home-api-practice-button-v2\"]",
+  "home.featuredProducts": "[data-testid=\"featured-products-v2\"]",
+  "home.recommendedProducts": "[data-testid=\"recommended-products-v2\"]",
+
+  "products.searchInput": "[data-testid=\"products-search-input-v2\"]",
+  "products.searchSubmit": "[data-testid=\"products-search-submit-v2\"]",
+  "products.categoryList": "[data-testid=\"products-category-list-v2\"]",
+  "products.brandList": "[data-testid=\"products-brand-list-v2\"]",
+  "products.grid": "[data-testid=\"products-grid-v2\"]",
+  "products.emptyState": "[data-testid=\"products-empty-state-v2\"]",
+
+  "product.card": "[data-testid=\"product-card-v2\"]",
+  "product.overlay": "[data-testid=\"product-overlay-v2\"]",
+  "product.addToCart": "[data-testid=\"add-to-cart-button-v2\"]",
+  "product.viewProduct": "[data-testid=\"view-product-button-v2\"]",
+  "product.name": "[data-testid=\"product-name-v2\"]",
+  "product.price": "[data-testid=\"product-price-v2\"]",
+
+  "login.form": "[data-testid=\"login-form-v2\"]",
+  "login.email": "[data-testid=\"login-email-v2\"]",
+  "login.password": "[data-testid=\"login-password-v2\"]",
+  "login.submit": "[data-testid=\"login-submit-v2\"]",
+
+  "signup.form": "[data-testid=\"signup-form-v2\"]",
+  "signup.name": "[data-testid=\"signup-name-v2\"]",
+  "signup.email": "[data-testid=\"signup-email-v2\"]",
+  "signup.password": "[data-testid=\"signup-password-v2\"]",
+  "signup.submit": "[data-testid=\"signup-submit-v2\"]",
+
+  "auth.message": "[data-testid=\"auth-message-v2\"]",
+
+  "cart.emptyState": "[data-testid=\"cart-empty-state-v2\"]",
+  "cart.table": "[data-testid=\"cart-table-v2\"]",
+  "cart.row": "[data-testid=\"cart-row-v2\"]",
+  "cart.quantityControl": "[data-testid=\"cart-quantity-control-v2\"]",
+  "cart.quantityInput": "[data-testid=\"cart-quantity-input-v2\"]",
+  "cart.removeButton": "[data-testid=\"cart-remove-button-v2\"]",
+  "clearCart.button": "[data-testid=\"clear-cart-button-v2\"]",
+  "cart.total": "[data-testid=\"cart-total-v2\"]",
+  "checkout.button": "[data-testid=\"checkout-button-v2\"]",
+
+  "cart.notification": "[data-testid=\"cart-notification-v2\"]",
+  "cart.notificationMessage": "[data-testid=\"cart-notification-message-v2\"]",
+
+  "scenario.list": "[data-testid=\"scenario-list-v2\"]",
+  "scenario.active": "[data-testid=\"active-scenario-v2\"]",
+  "scenario.mode": "[data-testid=\"scenario-mode-v2\"]",
+  "scenario.status": "[data-testid=\"scenario-status-v2\"]",
+  "scenario.reset": "[data-testid=\"scenario-reset-v2\"]",
+  "scenario.target": "[data-testid=\"scenario-target-v2\"]"
 }

@@ -4,6 +4,11 @@ import { readLocators, setLocator } from './locatorStore'
 import { callMcp } from './mcp/client'
 
 const SELF_HEAL = process.env.SELF_HEAL === '1'
+const ACTION_TIMEOUT_MS = Number(process.env.HEAL_ACTION_TIMEOUT_MS || 2_000)
+
+type HealAttemptOk = { ok: true; newSelector: string; confidence: number; reason?: string }
+type HealAttemptFail = { ok: false; reason: string }
+type HealAttempt = HealAttemptOk | HealAttemptFail
 
 export function getSelector(key: string): string {
   const locs = readLocators()
@@ -19,45 +24,45 @@ export function byKey(page: Page, key: string): Locator {
 
 async function attemptHeal(page: Page, key: string, oldSelector: string) {
   const hint = HINTS[key]
-  if (!hint) return { ok: false, reason: 'no hint' }
+  if (!hint) return { ok: false, reason: 'no hint' } satisfies HealAttemptFail
 
   const dom = await page.content()
   const result = await callMcp('heal', { key, dom, hint, oldSelector })
 
-  if (!result?.ok) return { ok: false, reason: 'server no match' }
+  if (!result?.ok) return { ok: false, reason: 'server no match' } satisfies HealAttemptFail
 
-  const newSelector = result.selector as string
-  const confidence = result.confidence as number
+  const newSelector = String(result.selector || '')
+  const confidence = Number(result.confidence || 0)
   if (!newSelector || confidence < 0.55) {
-    return { ok: false, reason: `low confidence: ${confidence}` }
+    return { ok: false, reason: `low confidence: ${confidence}` } satisfies HealAttemptFail
   }
 
   setLocator(key, newSelector)
-  return { ok: true, newSelector, confidence, reason: result.reason }
+  return { ok: true, newSelector, confidence, reason: result.reason } satisfies HealAttemptOk
 }
 
 export async function smartFill(page: Page, key: string, value: string) {
   const oldSelector = getSelector(key)
   try {
-    await page.locator(oldSelector).fill(value)
+    await page.locator(oldSelector).fill(value, { timeout: ACTION_TIMEOUT_MS })
   } catch (e: any) {
     if (!SELF_HEAL) throw e
-    const healed = await attemptHeal(page, key, oldSelector)
+    const healed: HealAttempt = await attemptHeal(page, key, oldSelector)
     if (!healed.ok) throw e
     console.log(`heal: updated ${key} -> ${healed.newSelector} (conf=${healed.confidence.toFixed(2)})`)
-    await page.locator(healed.newSelector).fill(value)
+    await page.locator(healed.newSelector).fill(value, { timeout: ACTION_TIMEOUT_MS })
   }
 }
 
 export async function smartClick(page: Page, key: string) {
   const oldSelector = getSelector(key)
   try {
-    await page.locator(oldSelector).click()
+    await page.locator(oldSelector).click({ timeout: ACTION_TIMEOUT_MS })
   } catch (e: any) {
     if (!SELF_HEAL) throw e
-    const healed = await attemptHeal(page, key, oldSelector)
+    const healed: HealAttempt = await attemptHeal(page, key, oldSelector)
     if (!healed.ok) throw e
     console.log(`heal: updated ${key} -> ${healed.newSelector} (conf=${healed.confidence.toFixed(2)})`)
-    await page.locator(healed.newSelector).click()
+    await page.locator(healed.newSelector).click({ timeout: ACTION_TIMEOUT_MS })
   }
 }
