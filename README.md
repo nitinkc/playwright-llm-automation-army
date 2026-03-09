@@ -75,3 +75,8 @@ WEB_SERVER_COMMAND="npm start" WEB_SERVER_CWD="../fe-automation-exercise-clone" 
 
 ## Allure + artifacts
 Playwright writes Allure results to `./allure-results` and keeps trace/video/screenshot on failures.
+
+
+Areas to Focus on for self-heal implementation:
+- `healing/heal.ts` — main healing logic, including DOM capture and MCP server
+- Are we fixing the test cases or the code itself (the fe automation store)
